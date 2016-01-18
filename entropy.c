@@ -53,7 +53,9 @@ double calc_entropy()
     for(size_t i = 0; i < 256; i++)
     {
         if(f[i] == 0)
+        {
             continue; //these don't contribute any entropy
+        }
 
         double prob = p(i);
         entropy += prob * log2(prob);

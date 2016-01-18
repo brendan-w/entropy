@@ -15,6 +15,10 @@ entropy: entropy.o
 %.o: %.c $(HEADERS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
+.PHONY: install
+install: entropy
+	install ./entropy /usr/bin
+
 .PHONY: clean
 clean:
-	rm -f $(OBJ) $(EXE_NAME)
+	rm -f *.o entropy
