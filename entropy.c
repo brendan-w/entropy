@@ -67,7 +67,10 @@ int main(int argc, char* argv[])
 {
     if(argc < 2)
     {
-        //TODO: help output
+        printf("Usage: entropy [FILE]...\n\n\
+Reports entropy in bits per byte\n\
+    8.0 = perfectly random\n\
+    0.0 = perfectly uniform\n");
         return 0;
     }
 
