@@ -7,8 +7,8 @@
 
 
 //frequency of each byte value
-int f[256];
-int total = 0;
+size_t f[256] = { 0 };
+size_t total = 0;
 
 
 
@@ -50,7 +50,7 @@ double calc_entropy()
     double entropy = 0.0;
 
     //test the probability of all byte values
-    for(int i = 0; i < 256; i++)
+    for(size_t i = 0; i < 256; i++)
     {
         if(f[i] == 0)
             continue; //these don't contribute any entropy
@@ -65,24 +65,31 @@ double calc_entropy()
 
 int main(int argc, char* argv[])
 {
-    if(argc != 2)
+    if(argc < 2)
     {
         //TODO: help output
-        return 1;
+        return 0;
     }
 
-    FILE* file = fopen(argv[1], "r");
-
-    if(file == NULL)
+    for(int f = 1; f < argc; f++)
     {
-        //TODO: output "no file"
-        return 1;
+        FILE* file = fopen(argv[f], "r");
+
+        if(file == NULL)
+        {
+            perror(argv[f]);
+            return 1;
+        }
+
+        process_file(file);
+        fclose(file);
     }
 
-    process_file(file);
-    fclose(file);
-
-    printf("%f bits per byte\n", calc_entropy());
+    //print the result
+    if(total > 0)
+    {
+        printf("%f bits per byte\n", calc_entropy());
+    }
 
     return 0;
 }
