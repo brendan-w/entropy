@@ -69,8 +69,10 @@ int main(int argc, char* argv[])
 {
     if(argc < 2)
     {
-        printf("Usage: entropy [FILE]...\n\n\
-Reports entropy in bits per byte\n\
+        printf("Usage: entropy [FILE]...\n\
+Reports information entropy in bits per byte\n\n\
+when FILE is -, read standard input.\n\n\
+Scale:\n\
     8.0 = perfectly random\n\
     0.0 = perfectly uniform\n");
         return 0;
@@ -101,7 +103,7 @@ Reports entropy in bits per byte\n\
     //print the result
     if(total > 0)
     {
-        printf("%f bits per byte\n", calc_entropy());
+        printf("%f\n", calc_entropy());
     }
 
     return 0;
