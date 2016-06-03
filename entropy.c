@@ -1,14 +1,14 @@
 
 #include <stdio.h>
+#include <string.h> //strcmp()
 #include <math.h>
 
 
 #define READ_BLOCK_SIZE 4096
 
-
 //frequency of each byte value
-size_t f[256] = { 0 };
-size_t total = 0;
+static size_t f[256] = { 0 };
+static size_t total = 0;
 
 
 
@@ -28,9 +28,9 @@ void process_file(FILE* file)
     while(!feof(file))
     {
         size_t bytes = fread(&block, 1, READ_BLOCK_SIZE, file);
-        
+
         total += bytes;
-        
+
         //build the frequency map
         for(size_t i = 0; i < bytes; i++)
         {
@@ -76,18 +76,26 @@ Reports entropy in bits per byte\n\
         return 0;
     }
 
-    for(int f = 1; f < argc; f++)
+    //switch for reading from stdin
+    if(argc == 2 && (strcmp(argv[1], "-") == 0))
     {
-        FILE* file = fopen(argv[f], "r");
-
-        if(file == NULL)
+        process_file(stdin);
+    }
+    else
+    {
+        for(int f = 1; f < argc; f++)
         {
-            perror(argv[f]);
-            return 1;
-        }
+            FILE* file = fopen(argv[f], "r");
 
-        process_file(file);
-        fclose(file);
+            if(file == NULL)
+            {
+                perror(argv[f]);
+                return 1;
+            }
+
+            process_file(file);
+            fclose(file);
+        }
     }
 
     //print the result
@@ -98,4 +106,3 @@ Reports entropy in bits per byte\n\
 
     return 0;
 }
-
